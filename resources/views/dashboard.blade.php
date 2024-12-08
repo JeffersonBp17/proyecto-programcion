@@ -10,10 +10,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <a href="#"
+                    <a href="{{ route('curriculums.create') }}"
                         class="inline-block bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition mb-4">
                         Crear Nuevo CV
                     </a>
+
 
                     <!-- Si hay CVs, mostrar la tabla -->
                     <table class="table-auto w-full border-collapse border border-gray-300">

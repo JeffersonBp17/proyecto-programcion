@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CurriculumController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProfileController;
@@ -27,7 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::apiResource('persons', PersonController::class);
+    Route::resource('persons', PersonController::class);
+    Route::resource('curriculums', CurriculumController::class);
 });
 
 
