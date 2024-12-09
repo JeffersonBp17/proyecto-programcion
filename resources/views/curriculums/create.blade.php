@@ -88,16 +88,20 @@
                             <h3 class="font-semibold text-xl">Educación</h3>
                             <div class="education-fields">
                                 <div class="education-entry mb-4">
-                                    <input type="text" name="school[]" value="Liceo Santa Cruz" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
-                                    <input type="text" name="degree[]" value="Bachillerato" required placeholder="Título" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="education[0][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="education[0][academic_degree]" required placeholder="Título" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="education[0][location]" required placeholder="Ubicación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="date" name="education[0][start_date]" required placeholder="Inicio" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="date" name="education[0][end_date]" required placeholder="Fin" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
                                 </div>
                             </div>
                             <button type="button" id="addEducation" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Institución</button>
                         </div>
 
+
                         <!-- Botones -->
                         <div class="mt-4">
-                            <a href="{{ route('dashboard') }}">
+                            <a href="{{ route('curriculums.index') }}">
                                 <button type="button" class="bg-red-500 text-white px-4 py-2 rounded-md mr-2">Cancelar</button>
                             </a>
                             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Guardar</button>
@@ -135,15 +139,21 @@
             showTab('cv');
         };
 
-        // Agregar más campos de educación
-        // document.getElementById('addEducation').addEventListener('click', function() {
-        //     const newEntry = document.createElement('div');
-        //     newEntry.classList.add('education-entry', 'mb-4');
-        //     newEntry.innerHTML = `
-        //         <input type="text" name="school[]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
-        //         <input type="text" name="degree[]" required placeholder="Título" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
-        //     `;
-        //     document.querySelector('.education-fields').appendChild(newEntry);
-        // });
+        /// Agregar más campos de educación
+        document.getElementById('addEducation').addEventListener('click', function() {
+            const educationFields = document.querySelector('.education-fields');
+            const newEntryIndex = educationFields.children.length;
+
+            const newEntry = document.createElement('div');
+            newEntry.classList.add('education-entry', 'mb-4');
+            newEntry.innerHTML = `
+                <input type="text" name="education[${newEntryIndex}][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                <input type="text" name="education[${newEntryIndex}][academic_degree]" required placeholder="Título" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                <input type="text" name="education[${newEntryIndex}][location]" required placeholder="Ubicación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                <input type="date" name="education[${newEntryIndex}][start_date]" required placeholder="Inicio" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                <input type="date" name="education[${newEntryIndex}][end_date]" required placeholder="Fin" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            `;
+            educationFields.appendChild(newEntry);
+        });
     </script>
 </x-app-layout>

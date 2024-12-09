@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curriculum;
+use App\Models\EducationHistory;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,7 @@ class CurriculumController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         // Validar los datos del formulario
         $validatedData = $request->validate([
             // Datos de la persona
@@ -48,6 +50,12 @@ class CurriculumController extends Controller
             'address' => 'required|string|max:255',
             // Datos del currículum
             'cv_name' => 'required|string|max:255',
+            // Validar educación como un array de registros
+            'education.*.academic_degree' => 'required|string|max:255',
+            'education.*.institution' => 'required|string|max:255',
+            'education.*.location' => 'required|string|max:255',
+            'education.*.start_date' => 'required|date',
+            'education.*.end_date' => 'nullable|date',
         ]);
 
         // Crear la persona y guardar los datos
@@ -71,6 +79,23 @@ class CurriculumController extends Controller
             'user_id' => Auth::id(), // ID del usuario logueado
             'person_id' => $person->id, // ID de la persona recién creada
         ]);
+
+        // dd($validatedData['education']);
+
+
+        // Guardar los registros de educación
+        foreach ($validatedData['education'] as $education) {
+            EducationHistory::create([
+                'person_id' => $person->id,
+                'academic_degree' => $education['academic_degree'],
+                'institution' => $education['institution'],
+                'location' => $education['location'],
+                'start_date' => $education['start_date'],
+                'end_date' => $education['end_date'],
+            ]);
+        }
+
+        // dd($education);
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('curriculums.index')

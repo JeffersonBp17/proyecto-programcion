@@ -28,4 +28,10 @@ class Person extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Relación con los registros de historial educativo
+    public function educationHistories()
+    {
+        return $this->hasMany(EducationHistory::class);
+    }
 }
