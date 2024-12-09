@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('linkedin');
             $table->date('birth_date');
             $table->string('marital_status');
+            $table->string('address');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

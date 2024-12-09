@@ -20,6 +20,7 @@ class Person extends Model
         'linkedin',
         'birth_date',
         'marital_status',
+        'address',
         'user_id',
     ];
 
