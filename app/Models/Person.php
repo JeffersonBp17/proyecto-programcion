@@ -40,4 +40,10 @@ class Person extends Model
     {
         return $this->hasMany(WorkExperience::class, 'person_id');
     }
+
+    // Relacion con Certifacaciones
+    public function certifications()
+    {
+        return $this->hasMany(Certification::class);
+    }
 }

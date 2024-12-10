@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use App\Models\Curriculum;
 use Illuminate\Http\Request;
+use App\Models\Certification;
 use App\Models\WorkExperience;
 use App\Models\EducationHistory;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +65,10 @@ class CurriculumController extends Controller
             'work_experience.*.start_date' => 'required|date',
             'work_experience.*.end_date' => 'nullable|date',
             'work_experience.*.description' => 'nullable|string',
+            // Validar ecertificaciones como un array de registros
+            'certifications.*.certification' => 'required|string|max:255',
+            'certifications.*.institution' => 'required|string|max:255',
+            'certifications.*.obtained_date' => 'required|date',
         ]);
 
         // Crear la persona y guardar los datos
@@ -113,6 +118,16 @@ class CurriculumController extends Controller
                 'start_date' => $experience['start_date'],
                 'end_date' => $experience['end_date'],
                 'description' => $experience['description'] ?? null,
+            ]);
+        }
+
+        // Guardar certificaciones
+        foreach ($validatedData['certifications'] as $certification) {
+            Certification::create([
+                'person_id' => $person->id,
+                'certification' => $certification['certification'],
+                'institution' => $certification['institution'],
+                'obtained_date' => $certification['obtained_date'],
             ]);
         }
 

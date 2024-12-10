@@ -23,6 +23,9 @@
                         <button type="button" id="tabWorkExperience" onclick="showTab('work_experience')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
                             Experiencia Laboral
                         </button>
+                        <button type="button" id="tabCertifications" onclick="showTab('certifications')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
+                            Certificaciones
+                        </button>
                     </div>
 
                     <!-- Formulario con datos -->
@@ -114,7 +117,17 @@
                             <button type="button" id="addWorkExperience" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Experiencia</button>
                         </div>
 
-
+                        <!-- Certificaciones -->
+                        <div id="certifications" class="tab-content hidden">
+                            <div class="certification-fields">
+                                <div class="certification-entry mb-4">
+                                    <input type="text" name="certifications[0][certification]" required placeholder="Certificación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="certifications[0][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="date" name="certifications[0][obtained_date]" required placeholder="Fecha de obtención" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                </div>
+                            </div>
+                            <button type="button" id="addCertification" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Certificación</button>
+                        </div>
 
                         <!-- Botones -->
                         <div class="mt-4">
@@ -181,14 +194,28 @@
             const newEntry = document.createElement('div');
             newEntry.classList.add('work-experience-entry', 'mb-4');
             newEntry.innerHTML = `
-        <input type="text" name="work_experience[${newEntryIndex}][position]" required placeholder="Puesto" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            <input type="text" name="work_experience[${newEntryIndex}][position]" required placeholder="Puesto" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
         <input type="text" name="work_experience[${newEntryIndex}][company]" required placeholder="Empresa" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
         <input type="text" name="work_experience[${newEntryIndex}][location]" required placeholder="Ubicación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
         <input type="date" name="work_experience[${newEntryIndex}][start_date]" required placeholder="Inicio" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
         <input type="date" name="work_experience[${newEntryIndex}][end_date]" placeholder="Fin (opcional)" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
         <textarea name="work_experience[${newEntryIndex}][description]" placeholder="Descripción de responsabilidades (opcional)" class="block mb-4 border-gray-300 p-4 rounded-md w-full"></textarea>
-    `;
+        `;
             workExperienceFields.appendChild(newEntry);
+        });
+        // Agregar más campos de certificaciones
+        document.getElementById('addCertification').addEventListener('click', function() {
+            const certificationFields = document.querySelector('.certification-fields');
+            const newEntryIndex = certificationFields.children.length;
+
+            const newEntry = document.createElement('div');
+            newEntry.classList.add('certification-entry', 'mb-4');
+            newEntry.innerHTML = `
+                <input type="text" name="certifications[${newEntryIndex}][certification]" required placeholder="Certificación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                <input type="text" name="certifications[${newEntryIndex}][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                <input type="date" name="certifications[${newEntryIndex}][obtained_date]" required placeholder="Fecha de obtención" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            `;
+            certificationFields.appendChild(newEntry);
         });
     </script>
 </x-app-layout>
