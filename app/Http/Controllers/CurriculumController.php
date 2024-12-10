@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Skill;
 use App\Models\Person;
+use App\Models\Interest;
 use App\Models\Language;
 use App\Models\Curriculum;
 use Illuminate\Http\Request;
@@ -77,6 +78,8 @@ class CurriculumController extends Controller
             // Validación de idiomas
             'languages.*.language' => 'required|string|max:255',
             'languages.*.level' => 'required|string|max:255',
+            // Validar intereses como un array de registros
+            'interests.*.interest' => 'required|string|max:255',
         ]);
 
         // Crear la persona y guardar los datos
@@ -154,6 +157,14 @@ class CurriculumController extends Controller
                 'person_id' => $person->id,
                 'language' => $language['language'],
                 'level' => $language['level'],
+            ]);
+        }
+
+        // Guardar los registros de intereses
+        foreach ($validatedData['interests'] as $interest) {
+            Interest::create([
+                'person_id' => $person->id,
+                'interest' => $interest['interest'],
             ]);
         }
 

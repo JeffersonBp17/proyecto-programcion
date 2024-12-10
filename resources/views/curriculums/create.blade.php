@@ -32,6 +32,10 @@
                         <button type="button" id="tabLanguages" onclick="showTab('languages')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
                             Idiomas
                         </button>
+                        <button type="button" id="tabInterests" onclick="showTab('interests')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
+                            Intereses
+                        </button>
+
                     </div>
 
                     <!-- Formulario con datos -->
@@ -155,6 +159,15 @@
                             </div>
                             <button type="button" id="addLanguage" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otro Idioma</button>
                         </div>
+                        <!-- Intereses -->
+                        <div id="interests" class="tab-content hidden">
+                            <div class="interest-fields">
+                                <div class="interest-entry mb-4">
+                                    <input type="text" name="interests[0][interest]" required placeholder="Interés" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                </div>
+                            </div>
+                            <button type="button" id="addInterest" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otro Interés</button>
+                        </div>
 
                         <!-- Botones -->
                         <div class="mt-4">
@@ -267,6 +280,20 @@
             <input type="text" name="languages[${newEntryIndex}][level]" required placeholder="Nivel" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
         `;
             languagesFields.appendChild(newEntry);
+        });
+
+        // Agregar más campos de intereses
+        document.getElementById('addInterest').addEventListener('click', function() {
+            const interestFields = document.querySelector('.interest-fields');
+            const newEntryIndex = interestFields.children.length;
+
+            const newEntry = document.createElement('div');
+            newEntry.classList.add('interest-entry', 'mb-4');
+
+            newEntry.innerHTML = `
+        <input type="text" name="interests[${newEntryIndex}][interest]" required placeholder="Interés" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+    `;
+            interestFields.appendChild(newEntry);
         });
     </script>
 </x-app-layout>
