@@ -181,7 +181,21 @@ class CurriculumController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $person = Person::with([
+            'curriculum',
+            'educationHistories',
+            'workExperiences',
+            'certifications',
+            'skills',
+            'languages',
+            'interests'
+        ])->find($id);
+
+        if ($person) {
+            return view('curriculums.show', compact('person'));
+        } else {
+            return redirect()->route('curriculums.index')->with('error', 'Persona no encontrada');
+        }
     }
 
     /**

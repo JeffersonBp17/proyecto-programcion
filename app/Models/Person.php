@@ -55,4 +55,19 @@ class Person extends Model
     {
         return $this->hasMany(Skill::class, 'person_id');
     }
+
+    public function curriculum()
+    {
+        return $this->hasOne(Curriculum::class, 'person_id');
+    }
+
+    public function languages()
+    {
+        return $this->hasMany(Language::class, 'person_id');
+    }
+
+    public function interests()
+    {
+        return $this->hasMany(Interest::class, 'person_id');
+    }
 }

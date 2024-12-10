@@ -31,7 +31,7 @@
                                 <td class="border border-gray-300 px-4 py-2">{{ $curriculum->name }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ $curriculum->created_at->format('Y-m-d') }}</td>
                                 <td class="border border-gray-300 px-4 py-2 flex space-x-2">
-                                    <a href="{{ route('curriculums.show', $curriculum->id) }}"
+                                    <a href="{{ route('curriculums.show', $curriculum->person->id) }}"
                                         class="text-blue-500 hover:underline">Ver</a>
                                     <a href="{{ route('curriculums.edit', $curriculum->id) }}"
                                         class="text-green-500 hover:underline">Editar</a>
