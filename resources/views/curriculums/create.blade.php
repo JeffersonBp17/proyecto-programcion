@@ -26,6 +26,9 @@
                         <button type="button" id="tabCertifications" onclick="showTab('certifications')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
                             Certificaciones
                         </button>
+                        <button type="button" id="tabSkills" onclick="showTab('skills')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
+                            Skills
+                        </button>
                     </div>
 
                     <!-- Formulario con datos -->
@@ -129,6 +132,17 @@
                             <button type="button" id="addCertification" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Certificación</button>
                         </div>
 
+                        <!-- Habilidades -->
+                        <div id="skills" class="tab-content hidden">
+                            <div class="skills-fields">
+                                <div class="skill-entry mb-4">
+                                    <input type="text" name="skills[0][skill]" required placeholder="Habilidad" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="skills[0][level]" required placeholder="Nivel" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                </div>
+                            </div>
+                            <button type="button" id="addSkill" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Habilidad</button>
+                        </div>
+
                         <!-- Botones -->
                         <div class="mt-4">
                             <a href="{{ route('curriculums.index') }}">
@@ -211,11 +225,22 @@
             const newEntry = document.createElement('div');
             newEntry.classList.add('certification-entry', 'mb-4');
             newEntry.innerHTML = `
-                <input type="text" name="certifications[${newEntryIndex}][certification]" required placeholder="Certificación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
-                <input type="text" name="certifications[${newEntryIndex}][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
-                <input type="date" name="certifications[${newEntryIndex}][obtained_date]" required placeholder="Fecha de obtención" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            <input type="text" name="certifications[${newEntryIndex}][certification]" required placeholder="Certificación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            <input type="text" name="certifications[${newEntryIndex}][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            <input type="date" name="certifications[${newEntryIndex}][obtained_date]" required placeholder="Fecha de obtención" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
             `;
             certificationFields.appendChild(newEntry);
+        });
+        // Agregar más campos de certificaciones
+        document.getElementById('addSkill').addEventListener('click', function() {
+            const skillsFields = document.querySelector('.skills-fields');
+            const newSkillEntry = document.createElement('div');
+            newSkillEntry.classList.add('skill-entry', 'mb-4');
+            newSkillEntry.innerHTML = `
+        <input type="text" name="skills[${skillsFields.children.length}][skill]" required placeholder="Habilidad" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        <input type="text" name="skills[${skillsFields.children.length}][level]" required placeholder="Nivel" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+    `;
+            skillsFields.appendChild(newSkillEntry);
         });
     </script>
 </x-app-layout>
