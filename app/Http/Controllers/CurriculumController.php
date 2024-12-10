@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Skill;
 use App\Models\Person;
+use App\Models\Language;
 use App\Models\Curriculum;
 use Illuminate\Http\Request;
 use App\Models\Certification;
@@ -73,6 +74,9 @@ class CurriculumController extends Controller
             // Validar ecertificaciones como un array de registros
             'skills.*.skill' => 'required|string|max:255',
             'skills.*.level' => 'required|string|max:255',
+            // Validación de idiomas
+            'languages.*.language' => 'required|string|max:255',
+            'languages.*.level' => 'required|string|max:255',
         ]);
 
         // Crear la persona y guardar los datos
@@ -143,6 +147,16 @@ class CurriculumController extends Controller
                 'level' => $skill['level'],
             ]);
         }
+
+        // Guardar idiomas
+        foreach ($validatedData['languages'] as $language) {
+            Language::create([
+                'person_id' => $person->id,
+                'language' => $language['language'],
+                'level' => $language['level'],
+            ]);
+        }
+
 
         // dd($education);
 

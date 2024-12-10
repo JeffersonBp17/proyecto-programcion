@@ -46,4 +46,13 @@ class Person extends Model
     {
         return $this->hasMany(Certification::class);
     }
+
+    /**
+     * Relación con el modelo Skill.
+     * Una persona puede tener muchas habilidades (skills).
+     */
+    public function skills()
+    {
+        return $this->hasMany(Skill::class, 'person_id');
+    }
 }

@@ -29,6 +29,9 @@
                         <button type="button" id="tabSkills" onclick="showTab('skills')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
                             Skills
                         </button>
+                        <button type="button" id="tabLanguages" onclick="showTab('languages')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
+                            Idiomas
+                        </button>
                     </div>
 
                     <!-- Formulario con datos -->
@@ -142,6 +145,16 @@
                             </div>
                             <button type="button" id="addSkill" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Habilidad</button>
                         </div>
+                        <!-- Idiomas -->
+                        <div id="languages" class="tab-content hidden">
+                            <div class="languages-fields">
+                                <div class="languages-entry mb-4">
+                                    <input type="text" name="languages[0][language]" required placeholder="Idioma" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="languages[0][level]" required placeholder="Nivel" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                </div>
+                            </div>
+                            <button type="button" id="addLanguage" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otro Idioma</button>
+                        </div>
 
                         <!-- Botones -->
                         <div class="mt-4">
@@ -241,6 +254,19 @@
         <input type="text" name="skills[${skillsFields.children.length}][level]" required placeholder="Nivel" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
     `;
             skillsFields.appendChild(newSkillEntry);
+        });
+        /// Agregar más campos para idiomas
+        document.getElementById('addLanguage').addEventListener('click', function() {
+            const languagesFields = document.querySelector('.languages-fields');
+            const newEntryIndex = languagesFields.children.length;
+
+            const newEntry = document.createElement('div');
+            newEntry.classList.add('languages-entry', 'mb-4');
+            newEntry.innerHTML = `
+            <input type="text" name="languages[${newEntryIndex}][language]" required placeholder="Idioma" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+            <input type="text" name="languages[${newEntryIndex}][level]" required placeholder="Nivel" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        `;
+            languagesFields.appendChild(newEntry);
         });
     </script>
 </x-app-layout>
