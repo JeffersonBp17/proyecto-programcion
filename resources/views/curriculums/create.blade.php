@@ -17,11 +17,11 @@
                         <button type="button" id="tabPersonal" onclick="showTab('personal')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
                             Datos Personales
                         </button>
-                        <!-- <button type="button" id="tabAddress" onclick="showTab('address')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
-                            Dirección
-                        </button> -->
                         <button type="button" id="tabEducation" onclick="showTab('education')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
                             Educación
+                        </button>
+                        <button type="button" id="tabWorkExperience" onclick="showTab('work_experience')" class="tab-button px-4 py-2 text-gray-800 hover:text-blue-600 focus:outline-none">
+                            Experiencia Laboral
                         </button>
                     </div>
 
@@ -85,7 +85,7 @@
 
                         <!-- Educación -->
                         <div id="education" class="tab-content hidden">
-                            <h3 class="font-semibold text-xl">Educación</h3>
+
                             <div class="education-fields">
                                 <div class="education-entry mb-4">
                                     <input type="text" name="education[0][institution]" required placeholder="Institución" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
@@ -97,6 +97,23 @@
                             </div>
                             <button type="button" id="addEducation" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Institución</button>
                         </div>
+
+                        <!-- Experiencia Laboral -->
+                        <div id="work_experience" class="tab-content hidden">
+
+                            <div class="work-experience-fields">
+                                <div class="work-experience-entry mb-4">
+                                    <input type="text" name="work_experience[0][position]" required placeholder="Puesto" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="work_experience[0][company]" required placeholder="Empresa" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="text" name="work_experience[0][location]" required placeholder="Ubicación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="date" name="work_experience[0][start_date]" required placeholder="Inicio" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <input type="date" name="work_experience[0][end_date]" placeholder="Fin (opcional)" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+                                    <textarea name="work_experience[0][description]" placeholder="Descripción de responsabilidades (opcional)" class="block mb-4 border-gray-300 p-4 rounded-md w-full"></textarea>
+                                </div>
+                            </div>
+                            <button type="button" id="addWorkExperience" class="bg-green-500 text-white px-4 py-2 rounded-md">Agregar Otra Experiencia</button>
+                        </div>
+
 
 
                         <!-- Botones -->
@@ -154,6 +171,24 @@
                 <input type="date" name="education[${newEntryIndex}][end_date]" required placeholder="Fin" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
             `;
             educationFields.appendChild(newEntry);
+        });
+
+        // Agregar más campos de experiencia laboral
+        document.getElementById('addWorkExperience').addEventListener('click', function() {
+            const workExperienceFields = document.querySelector('.work-experience-fields');
+            const newEntryIndex = workExperienceFields.children.length;
+
+            const newEntry = document.createElement('div');
+            newEntry.classList.add('work-experience-entry', 'mb-4');
+            newEntry.innerHTML = `
+        <input type="text" name="work_experience[${newEntryIndex}][position]" required placeholder="Puesto" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        <input type="text" name="work_experience[${newEntryIndex}][company]" required placeholder="Empresa" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        <input type="text" name="work_experience[${newEntryIndex}][location]" required placeholder="Ubicación" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        <input type="date" name="work_experience[${newEntryIndex}][start_date]" required placeholder="Inicio" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        <input type="date" name="work_experience[${newEntryIndex}][end_date]" placeholder="Fin (opcional)" class="block mb-4 border-gray-300 p-4 rounded-md w-full">
+        <textarea name="work_experience[${newEntryIndex}][description]" placeholder="Descripción de responsabilidades (opcional)" class="block mb-4 border-gray-300 p-4 rounded-md w-full"></textarea>
+    `;
+            workExperienceFields.appendChild(newEntry);
         });
     </script>
 </x-app-layout>

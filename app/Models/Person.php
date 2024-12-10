@@ -34,4 +34,10 @@ class Person extends Model
     {
         return $this->hasMany(EducationHistory::class);
     }
+
+    // Relación con WorkExperience
+    public function workExperiences()
+    {
+        return $this->hasMany(WorkExperience::class, 'person_id');
+    }
 }

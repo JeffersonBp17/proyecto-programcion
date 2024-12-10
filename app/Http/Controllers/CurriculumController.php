@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Curriculum;
-use App\Models\EducationHistory;
 use App\Models\Person;
+use App\Models\Curriculum;
 use Illuminate\Http\Request;
+use App\Models\WorkExperience;
+use App\Models\EducationHistory;
 use Illuminate\Support\Facades\Auth;
 
 class CurriculumController extends Controller
@@ -56,6 +57,13 @@ class CurriculumController extends Controller
             'education.*.location' => 'required|string|max:255',
             'education.*.start_date' => 'required|date',
             'education.*.end_date' => 'nullable|date',
+            // Validar experiencias laborales como un array de registros
+            'work_experience.*.position' => 'required|string|max:255',
+            'work_experience.*.company' => 'required|string|max:255',
+            'work_experience.*.location' => 'required|string|max:255',
+            'work_experience.*.start_date' => 'required|date',
+            'work_experience.*.end_date' => 'nullable|date',
+            'work_experience.*.description' => 'nullable|string',
         ]);
 
         // Crear la persona y guardar los datos
@@ -92,6 +100,19 @@ class CurriculumController extends Controller
                 'location' => $education['location'],
                 'start_date' => $education['start_date'],
                 'end_date' => $education['end_date'],
+            ]);
+        }
+
+        // Guardar los registros de experiencia laboral
+        foreach ($validatedData['work_experience'] as $experience) {
+            WorkExperience::create([
+                'person_id' => $person->id,
+                'position' => $experience['position'],
+                'company' => $experience['company'],
+                'location' => $experience['location'],
+                'start_date' => $experience['start_date'],
+                'end_date' => $experience['end_date'],
+                'description' => $experience['description'] ?? null,
             ]);
         }
 
