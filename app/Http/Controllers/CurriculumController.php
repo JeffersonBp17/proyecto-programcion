@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Skill;
 use App\Models\Person;
 use App\Models\Interest;
@@ -219,6 +220,45 @@ class CurriculumController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Buscar el currículum por su ID
+        $curriculum = Curriculum::with(['person'])->find($id);
+
+        if (!$curriculum) {
+            return redirect()->route('curriculums.index')->with('error', 'Currículum no encontrado.');
+        }
+
+        // Iniciar la transacción
+        try {
+            DB::beginTransaction();
+
+            // Obtener la persona asociada al currículum
+            $person = $curriculum->person;
+
+            if ($person) {
+                // Eliminar relaciones asociadas a la persona
+                $person->educationHistories()->delete();
+                $person->workExperiences()->delete();
+                $person->certifications()->delete();
+                $person->skills()->delete();
+                $person->languages()->delete();
+                $person->interests()->delete();
+
+                // Eliminar la persona
+                $person->delete();
+            }
+
+            // Eliminar el currículum
+            $curriculum->delete();
+
+            // Confirmar la transacción
+            \DB::commit();
+
+            return redirect()->route('curriculums.index')->with('success', 'Currículum eliminado exitosamente.');
+        } catch (\Exception $e) {
+            // Revertir la transacción en caso de error
+            \DB::rollBack();
+
+            return redirect()->route('curriculums.index')->with('error', 'Hubo un problema al eliminar el currículum.');
+        }
     }
 }
