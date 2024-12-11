@@ -204,16 +204,164 @@ class CurriculumController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Buscar el currículum con los datos relacionados (persona, educación, experiencia, etc.)
+        $curriculum = Curriculum::with([
+            'person',
+            'person.educationHistories',
+            'person.workExperiences',
+            'person.certifications',
+            'person.skills',
+            'person.languages',
+            'person.interests'
+        ])->find($id);
+
+        // dd($curriculum->person->educationHistories->count());
+        // dd($curriculum->educationHistories);
+
+        // Si el currículum no existe, redirigir con un mensaje de error
+        if (!$curriculum) {
+            return redirect()->route('curriculums.index')->with('error', 'Currículum no encontrado.');
+        }
+
+        // Pasar el currículum a la vista de edición
+        return view('curriculums.edit', compact('curriculum'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
+            // Validación similar a la de 'store'
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'second_last_name' => 'nullable|string|max:255',
+            'phone' => 'required|string|max:15',
+            'email' => 'required|email|max:255',
+            'linkedin' => 'nullable|url|max:255',
+            'birth_date' => 'required|date',
+            'marital_status' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'cv_name' => 'required|string|max:255',
+            'education.*.academic_degree' => 'required|string|max:255',
+            'education.*.institution' => 'required|string|max:255',
+            'education.*.location' => 'required|string|max:255',
+            'education.*.start_date' => 'required|date',
+            'education.*.end_date' => 'nullable|date',
+            'work_experience.*.position' => 'required|string|max:255',
+            'work_experience.*.company' => 'required|string|max:255',
+            'work_experience.*.location' => 'required|string|max:255',
+            'work_experience.*.start_date' => 'required|date',
+            'work_experience.*.end_date' => 'nullable|date',
+            'work_experience.*.description' => 'nullable|string',
+            'certifications.*.certification' => 'required|string|max:255',
+            'certifications.*.institution' => 'required|string|max:255',
+            'certifications.*.obtained_date' => 'required|date',
+            'skills.*.skill' => 'required|string|max:255',
+            'skills.*.level' => 'required|string|max:255',
+            'languages.*.language' => 'required|string|max:255',
+            'languages.*.level' => 'required|string|max:255',
+            'interests.*.interest' => 'required|string|max:255',
+        ]);
+
+        // Buscar el currículum y persona asociados al ID
+        $curriculum = Curriculum::with('person')->find($id);
+
+        if (!$curriculum) {
+            return redirect()->route('curriculums.index')->with('error', 'Currículum no encontrado.');
+        }
+
+        // Actualizar los datos de la persona
+        $person = $curriculum->person;
+        $person->update([
+            'first_name' => $validatedData['first_name'],
+            'middle_name' => $validatedData['middle_name'],
+            'last_name' => $validatedData['last_name'],
+            'second_last_name' => $validatedData['second_last_name'],
+            'phone' => $validatedData['phone'],
+            'email' => $validatedData['email'],
+            'linkedin' => $validatedData['linkedin'],
+            'birth_date' => $validatedData['birth_date'],
+            'marital_status' => $validatedData['marital_status'],
+            'address' => $validatedData['address'],
+        ]);
+
+        // Actualizar el currículum
+        $curriculum->update([
+            'name' => $validatedData['cv_name'],
+        ]);
+
+        // Eliminar y volver a crear los registros de educación, experiencia laboral, etc.
+        // Esto es necesario porque los datos pueden haber cambiado (añadido o eliminado elementos)
+        $person->educationHistories()->delete();
+        foreach ($validatedData['education'] as $education) {
+            EducationHistory::create([
+                'person_id' => $person->id,
+                'academic_degree' => $education['academic_degree'],
+                'institution' => $education['institution'],
+                'location' => $education['location'],
+                'start_date' => $education['start_date'],
+                'end_date' => $education['end_date'],
+            ]);
+        }
+
+        $person->workExperiences()->delete();
+        foreach ($validatedData['work_experience'] as $experience) {
+            WorkExperience::create([
+                'person_id' => $person->id,
+                'position' => $experience['position'],
+                'company' => $experience['company'],
+                'location' => $experience['location'],
+                'start_date' => $experience['start_date'],
+                'end_date' => $experience['end_date'],
+                'description' => $experience['description'] ?? null,
+            ]);
+        }
+
+        $person->certifications()->delete();
+        foreach ($validatedData['certifications'] as $certification) {
+            Certification::create([
+                'person_id' => $person->id,
+                'certification' => $certification['certification'],
+                'institution' => $certification['institution'],
+                'obtained_date' => $certification['obtained_date'],
+            ]);
+        }
+
+        $person->skills()->delete();
+        foreach ($validatedData['skills'] as $skill) {
+            Skill::create([
+                'person_id' => $person->id,
+                'skill' => $skill['skill'],
+                'level' => $skill['level'],
+            ]);
+        }
+
+        $person->languages()->delete();
+        foreach ($validatedData['languages'] as $language) {
+            Language::create([
+                'person_id' => $person->id,
+                'language' => $language['language'],
+                'level' => $language['level'],
+            ]);
+        }
+
+        $person->interests()->delete();
+        foreach ($validatedData['interests'] as $interest) {
+            Interest::create([
+                'person_id' => $person->id,
+                'interest' => $interest['interest'],
+            ]);
+        }
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('curriculums.index')->with('success', 'Currículum actualizado exitosamente.');
     }
+
 
     /**
      * Remove the specified resource from storage.
