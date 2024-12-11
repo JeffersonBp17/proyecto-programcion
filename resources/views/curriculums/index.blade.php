@@ -35,6 +35,8 @@
                                         class="text-blue-500 hover:underline">Ver</a>
                                     <a href="{{ route('curriculums.edit', $curriculum->id) }}"
                                         class="text-green-500 hover:underline">Editar</a>
+                                    <a href="{{ route('curriculums.generateCurriculum', $curriculum->id) }}"
+                                        class="text-yellow-500 hover:underline">Descargar</a>
                                     <form action="{{ route('curriculums.destroy', $curriculum->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')

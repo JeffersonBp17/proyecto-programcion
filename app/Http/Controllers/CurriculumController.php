@@ -7,11 +7,13 @@ use App\Models\Skill;
 use App\Models\Person;
 use App\Models\Interest;
 use App\Models\Language;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Curriculum;
 use Illuminate\Http\Request;
 use App\Models\Certification;
 use App\Models\WorkExperience;
 use App\Models\EducationHistory;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\Auth;
 
 class CurriculumController extends Controller
@@ -408,5 +410,24 @@ class CurriculumController extends Controller
 
             return redirect()->route('curriculums.index')->with('error', 'Hubo un problema al eliminar el currículum.');
         }
+    }
+
+    public function generateCurriculum($id)
+    {
+        // Obtener los datos de la persona y sus relaciones
+        $person = Person::with([
+            'educationHistories',
+            'workExperiences',
+            'certifications',
+            'skills',
+            'languages',
+            'interests'
+        ])->findOrFail($id);
+
+        // Cargar la vista de la persona
+        $pdf = FacadePdf::loadView('curriculums.print', compact('person'));
+
+        // Retornar el PDF generado
+        return $pdf->download('curriculum_' . $person->first_name . '.pdf');
     }
 }

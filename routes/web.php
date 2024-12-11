@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('persons', PersonController::class);
     Route::resource('curriculums', CurriculumController::class);
+    Route::get('/curriculums/{id}/download', [CurriculumController::class, 'generateCurriculum'])->name('curriculums.generateCurriculum');
 });
 
 
